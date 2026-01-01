@@ -221,6 +221,7 @@ local function createMainPanel()
             if setclipboard then
                 pcall(function() setclipboard(tostring(url)) end)
             else
+                -- fallback: print URL so user can copy
                 print("Copy this URL:", url)
             end
         end)
@@ -241,6 +242,7 @@ local function createMainPanel()
                 warn("loadstring failed:", err)
                 return
             end
+            -- execute in protected call
             local ok, err2 = pcall(f)
             if not ok then
                 warn("Execution error:", err2)
@@ -249,7 +251,7 @@ local function createMainPanel()
         end)
     end
 
-    -- === Funktion um Buttons zu erstellen (zeigt Bestätigungsdialog statt sofortigem loadstring) ===
+    -- === Funktion um Buttons zu erstellen (ändert Verhalten: zeigt Bestätigungsdialog statt sofort auszuführen) ===
     local function createButton(text, pos, url)
         local btn = Instance.new("TextButton")
         btn.Parent = buttonContainer
